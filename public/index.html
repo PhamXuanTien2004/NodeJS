@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ung dung web dong don gian</title>
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+</head>
+
+<body>
+    <h1>Nhap ten cua ban</h1>
+    <!--    Tao mot form nhap lieu-->
+    <form id="myForm">
+        <!--    Nhan va truong nhap lieu ten-->
+        <label for="name">Ten: </label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Gui</button>
+    </form>
+    <!-- Noi de hien thi phan hoi tu server -->
+    <p id="response">Noi dung dong (dynamic) se hien thi o day</p>
+
+    <!-- ma JavaScript xu ly su kien khi nguoi dung gui form -->
+    <script >
+        document.getElementById('myForm').addEventListener('submit', async function (e) {
+            //ngan hanh vi mac dinh cua form, ngan viec tai laji trang
+            e.preventDefault();
+
+            // lay gia tri nhap tu truonga'name'
+            const name = document.getElementById('name').value;
+            //gui yeu cau POST toi server tai route '/submit'
+            const response = await fetch('/api/v1/submit', {
+                method: 'POST', //phuong thuc post de gui du lieu
+                headers: {
+                    'Content-Type': 'application/json', // dinh dang noi dung gui la JSON
+                },
+                body: JSON.stringify({ name }), //chuyen doi doi tuong chua ten thanh chuoi JSON
+            });
+            //nhan phan hoi tu server va chuyen doi JSON thanh doi tuong JavaScript
+            const data = await response.json();
+            //hien thi phan hoi tu server
+            document.getElementById('response').textContent = data.message;
+
+            
+        });
+    </script>
+</body>
+
+</html>
